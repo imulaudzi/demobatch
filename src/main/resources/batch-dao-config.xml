@@ -1,0 +1,58 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+       <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+       <!--xmlns:tx="http://www.springframework.org/schema/tx"-->
+       <!--xmlns:context="http://www.springframework.org/schema/context"-->
+       <!--xmlns:jpa="http://www.springframework.org/schema/data/jpa"-->
+       <!--xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd-->
+       <!--http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd-->
+       <!--http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd-->
+           <!--http://www.springframework.org/schema/tx-->
+    <!--http://www.springframework.org/schema/tx/spring-tx.xsd">-->
+
+    <!--<jpa:repositories base-package="com.batch.demoBatch.Dao"/>-->
+
+    <!--<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">-->
+        <!--<property name="poolName" value="springHikariCP"/>-->
+        <!--<property name="connectionTestQuery" value="SELECT 1"/>-->
+        <!--<property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource"/>-->
+        <!--<property name="maximumPoolSize" value="10"/>-->
+        <!--<property name="dataSourceProperties">-->
+            <!--<props>-->
+                <!--<prop key="user">postgres</prop>-->
+                <!--<prop key="password">isaac2</prop>-->
+                <!--<prop key="databaseName">demo_batch</prop>-->
+                <!--<prop key="portNumber">5432</prop>-->
+                <!--<prop key="serverName">localhost</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">-->
+        <!--<constructor-arg ref="hikariConfig"/>-->
+    <!--</bean>-->
+    <!--<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+        <!--<property name="packagesToScan" value="com.batch.demoBatch.Dao"/>-->
+        <!--<property name="persistenceUnitName" value="stadto"/>-->
+        <!--<property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>-->
+        <!--<property name="jpaProperties">-->
+            <!--<props>-->
+                <!--&lt;!&ndash;<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>&ndash;&gt;-->
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>-->
+                <!--<prop key="hibernate.hbm2ddl.auto">create</prop>-->
+                <!--<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>-->
+                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <!--<prop key="hibernate.format_sql">true</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">-->
+        <!--<property name="showSql" value="true"/>-->
+        <!--<property name="generateDdl" value="true"/>-->
+        <!--<property name="databasePlatform" value="org.hibernate.dialect.PostgreSQL9Dialect"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">-->
+        <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
+    <!--</bean>-->
+<!--</beans>-->

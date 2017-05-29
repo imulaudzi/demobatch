@@ -1,15 +1,25 @@
-package com.batch.demoBatch.Dao;
+package com.batch.demoBatch.Dao.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * Created by isaac on 2017/05/26.
  */
+@Entity
+@Table(name = "BATCH_QUEUE")
 public class BatchQueue {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "JOB_ID")
     private Long jobId;
+    @Column(name = "JOB_STATUS")
     private String jobStatus;
+    @Column(name = "RETRY_COUNT")
     private Integer retryCount;
+    @Column(name = "LAST_UPDATE_TIME")
     private LocalDateTime lastUpdateTime;
 
 

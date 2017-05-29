@@ -1,15 +1,37 @@
-package com.batch.demoBatch.Dao;
+package com.batch.demoBatch.Dao.model;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 
 /**
  * Created by isaac on 2017/05/26.
  */
+@Entity
+@Table(name = "JOB_PARAMS")
 public class JobParams {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "PARAM_ID")
+    private Long paramId;
+    @Column(name = "PARAM_KEY")
     private String paramKey;
+    @Column(name = "PARAM_VALUE")
     private String paramValue;
+    @Column(name = "TYPE")
     private String type;
-    private Long jobId;
+    @ManyToOne
+    @JoinColumn(name = "JOB_ID")
+    private BatchQueue jobId;
 
+    public Long getParamId() {
+        return paramId;
+    }
+
+    public void setParamId(Long paramId) {
+        this.paramId = paramId;
+    }
     public String getParamKey() {
         return paramKey;
     }
@@ -34,11 +56,11 @@ public class JobParams {
         this.type = type;
     }
 
-    public Long getJobId() {
+    public BatchQueue getJobId() {
         return jobId;
     }
 
-    public void setJobId(Long jobId) {
+    public void setJobId(BatchQueue jobId) {
         this.jobId = jobId;
     }
 }
