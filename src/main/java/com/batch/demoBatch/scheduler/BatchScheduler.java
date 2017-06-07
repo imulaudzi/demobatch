@@ -21,6 +21,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -41,46 +42,60 @@ public class BatchScheduler implements ApplicationListener<ContextRefreshedEvent
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        BatchParam param = new BatchParam();
+        param.setStatus("PENDING");
+        param.setType("ANyType");
+        executeM(param);
+    }
 
-        LOGGER.info("Hello");
-
-        CronTrigger cronTrigger = new CronTrigger("*/10 * * * * *", TimeZone.getTimeZone("GMT"));
+    private void executeM(final BatchParam batchParam){
 
         Runnable task = () -> {
-            LOGGER.info("********** STARTING BATCH JOB **********");
+            LOGGER.info("********** Scheduling a Job **********");
 
             BatchQueue batchQueue = new BatchQueue();
             batchQueue.setJobStatus("PENDING");
             batchQueue.setRetryCount(0);
             batchQueueRepository.save(batchQueue);
-//
-//             batchParam = new BatchParam();
-            Class aClass = BatchParam.class;
-            Field[] fields = aClass.getDeclaredFields();
-            for (Field field : fields) {
-                for (ParamKeyEnum keyEnum : ParamKeyEnum.values()) {
-                    if (field.getName().equalsIgnoreCase(keyEnum.getKey())) {
-                        LOGGER.debug("RUNNING...[{}], type: [{}]", field.getName(), keyEnum.getType());
-                        JobParams jobParams = new JobParams();
-                        jobParams.setParamKey(field.getName());
-                        if (field.getName().contains("Date")) {
 
-                            setDate(jobParams, field);
-                        }
-//                        else {
-//                        jobParams.setParamValue(field.get(field.getName()));
-//                        }
-                        jobParams.setJobId(batchQueue);
-                        jobParams.setType(keyEnum.getType());
-                        jobParamsRepository.save(jobParams);
-                    }
-                }
+            try {
+                reflector(batchParam, batchQueue);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
             }
             LOGGER.info("********** BATCH JOB SCHEDULED **********");
         };
-
+        CronTrigger cronTrigger = new CronTrigger("*/30 * * * * *", TimeZone.getTimeZone("GMT"));
         taskScheduler = new DefaultManagedTaskScheduler();
         taskScheduler.schedule(task, cronTrigger);
+    }
+
+
+    private void reflector(BatchParam batchParam, BatchQueue batchQueue) throws IllegalAccessException, NoSuchFieldException {
+        Class aClass = batchParam.getClass();
+        Field[] fields = aClass.getDeclaredFields();
+        for (Field field : fields) {
+            for (ParamKeyEnum keyEnum : ParamKeyEnum.values()) {
+                if (field.getName().equalsIgnoreCase(keyEnum.getKey())) {
+                    field = BatchParam.class.getDeclaredField(keyEnum.getKey());
+                    field.setAccessible(true);
+                    LOGGER.debug("RUNNING...[{}]", field.getName());
+                    JobParams jobParams = new JobParams();
+                    jobParams.setJobId(batchQueue);
+                    jobParams.setParamKey(field.getName());
+
+                    if (field.getName().contains("Date")) {
+                        setDate(jobParams, field);
+                    } else {
+                        String jobParam = (String) field.get(batchParam);
+                        jobParams.setParamValue(jobParam);
+                    }
+                    jobParamsRepository.save(jobParams);
+                }
+            }
+        }
     }
 
     private void setDate(JobParams date, Field field) {

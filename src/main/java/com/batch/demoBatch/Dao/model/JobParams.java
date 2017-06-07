@@ -19,8 +19,8 @@ public class JobParams {
     private String paramKey;
     @Column(name = "PARAM_VALUE")
     private String paramValue;
-    @Column(name = "TYPE")
-    private String type;
+//    @Column(name = "TYPE")
+//    private String type;
     @ManyToOne
     @JoinColumn(name = "JOB_ID")
     private BatchQueue jobId;
@@ -48,13 +48,13 @@ public class JobParams {
         this.paramValue = paramValue;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+//    public String getType() {
+//        return type;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 
     public BatchQueue getJobId() {
         return jobId;

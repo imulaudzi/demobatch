@@ -7,23 +7,20 @@ import java.util.List;
  */
 public enum ParamKeyEnum {
 
-    STARTDATE("StartDate", "LocalDateTime"),
-    ENDDATE("EndDate", "LocalDateTime");
+    STARTDATE("startDate"),
+    ENDDATE("endDate"),
+    TYPE("type"),
+    STATUS("status");
 
     private String key;
     private String type;
 
-    ParamKeyEnum(String key, String type) {
+    ParamKeyEnum(String key) {
         this.key = key;
-        this.type = type;
 
     }
 
     public String getKey() {
         return key;
-    }
-
-    public String getType() {
-        return type;
     }
 }
